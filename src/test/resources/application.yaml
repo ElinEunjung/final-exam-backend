@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: bicycle-inventory-app
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    database: postgresql
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/bicycle-inventory-db
+    username: myuser
+    password: secret
