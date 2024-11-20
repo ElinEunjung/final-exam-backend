@@ -7,19 +7,22 @@ import lombok.*;
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "customer_address")
 
 public class CustomerAddress {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private @Id Long id;
-    private String website;
-    private long phoneNumber;
-    private String name;
+    private String address;
 
-    //@OneToMany(mappedBy = "manufacturer", cascade = CascadeType.ALL)
-    public CustomerAddress(String website, long phoneNumber, String name) {
-        this.website = website;
-        this.phoneNumber = phoneNumber;
-        this.name = name;
+//    @OneToOne(mappedBy = "shippingAddress") // Indicates this side is the inverse of the relationship
+//    private Order order; // Optional if we need a bidirectional relationship
+
+    @ManyToOne
+    @JoinColumn(name = "customer_address_id")
+    private Customer customer;
+
+    public CustomerAddress(String address) {
+        this.address = address;
     }
 }
