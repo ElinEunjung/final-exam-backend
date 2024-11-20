@@ -22,7 +22,12 @@ public class CustomerAddress {
     @JoinColumn(name = "customer_address_id")
     private Customer customer;
 
-    public CustomerAddress(String address) {
+    public CustomerAddress(
+            String address,
+            Customer customer
+    ) {
         this.address = address;
+        this.customer = customer;
     }
+
 }

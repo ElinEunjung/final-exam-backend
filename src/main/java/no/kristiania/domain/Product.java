@@ -29,7 +29,8 @@ public class Product {
             String description,
             int price,
             ProductStatus status,
-            int quantityOnHand
+            int quantityOnHand,
+            Order order
     ) {
         this.id = id;
         this.name = name;
@@ -37,5 +38,6 @@ public class Product {
         this.price = price;
         this.status = status;
         this.quantityOnHand = quantityOnHand;
+        this.order = order;
     }
 }
