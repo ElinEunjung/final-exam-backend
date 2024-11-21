@@ -1,4 +1,4 @@
-package no.kristiania.domain;
+package no.kristiania.repositories.customers;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -7,13 +7,23 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "customer_address")
+@Table(name = "CUSTOMER_ADDRESSES")
 
 public class CustomerAddress {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "customer_address_gen")
-    @SequenceGenerator(name="customer_address_gen", sequenceName = "customer_address_seq")
-    @Column(name = "customer_address_id", nullable = false)
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "customer_address_gen"
+    )
+    @SequenceGenerator(
+            name="customer_address_gen",
+            sequenceName = "customer_address_seq",
+            allocationSize = 1
+    )
+    @Column(
+            name = "customer_address_id",
+            nullable = false
+    )
     private Long id;
 
     private String address;

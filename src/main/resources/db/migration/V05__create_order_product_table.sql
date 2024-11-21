@@ -1,11 +1,9 @@
-CREATE TABLE if NOT EXISTS order_product
+CREATE TABLE if NOT EXISTS ORDER_PRODUCTS
 (
-    id BIGINT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL ,
-    phoneNumber VARCHAR(40),
-    email VARCHAR(100),
-    addresses BIGINT,
-    history BIGINT
+    order_product_id BIGINT PRIMARY KEY,
+    order_id BIGINT NOT NULL REFERENCES ORDERS(order_id),
+    product_id BIGINT NOT NULL REFERENCES PRODUCTS(product_id),
+    productQuantity INTEGER NOT NULL
 );
 
 CREATE SEQUENCE order_product_seq;

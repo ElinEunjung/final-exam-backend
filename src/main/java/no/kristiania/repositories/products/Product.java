@@ -1,10 +1,11 @@
-package no.kristiania.domain;
+package no.kristiania.repositories.products;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import no.kristiania.models.ProductStatus;
+import no.kristiania.repositories.orders.OrderProduct;
 
 import java.util.List;
 
@@ -12,26 +13,36 @@ import java.util.List;
 @Data // Automatically generates getters, setters, toString(), equals() and hashCode() method
 @NoArgsConstructor // Automatically generates constructors with and without arguments
 //@AllArgsConstructor
-@Table(name = "product")
+@Table(name = "PRODUCTS")
 public class Product {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "product_gen")
-    @SequenceGenerator(name = "product_gen", sequenceName = "product_seq")
-    @Column(name = "product_id", nullable = false)
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "product_gen"
+    )
+    @SequenceGenerator(
+            name = "product_gen",
+            sequenceName = "product_seq",
+            allocationSize = 1
+    )
+    @Column(
+            name = "product_id",
+            nullable = false
+    )
     private Long id;
 
     private String name;
     private String description;
-    private int price;
+    private float price;
 
     @Enumerated(EnumType.STRING)
     private ProductStatus status;
 
-    private int quantityOnHand;
+    private int quantityInStock; // same with "quantityOnHand"
 
-    @ManyToOne
-    @JoinColumn(name = "order_product_id")
-    private OrderProduct products; // ??
+    @OneToMany(mappedBy = "product")
+    @JsonIgnoreProperties("product")
+    private List<OrderProduct> orderProducts;
 
     public Product(
             Long id,
@@ -39,15 +50,16 @@ public class Product {
             String description,
             int price,
             ProductStatus status,
-            int quantityOnHand,
-            OrderProduct products
+            int quantityInStock,
+            List<OrderProduct> orderProducts
     ) {
         this.id = id;
         this.name = name;
+
         this.description = description;
         this.price = price;
         this.status = status;
-        this.quantityOnHand = quantityOnHand;
-        this.products = products;
+        this.quantityInStock = quantityInStock;
+        this.orderProducts = orderProducts;
     }
 }

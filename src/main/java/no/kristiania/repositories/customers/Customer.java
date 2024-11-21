@@ -1,10 +1,11 @@
-package no.kristiania.domain;
+package no.kristiania.repositories.customers;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import no.kristiania.repositories.orders.Order;
 
 import java.util.List;
 
@@ -12,23 +13,29 @@ import java.util.List;
 @Data // Automatically generates getters, setters, toString(), equals() and hashCode() method
 @NoArgsConstructor // Automatically generates constructors with and without arguments
 @AllArgsConstructor
-@Table(name = "customer") // Set table name as "customer"
+@Table(name = "CUSTOMERS") // Set table name as "customer"
 public class Customer {
     @Id // This field is primary key.
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "customer_gen") // create primary key value automatically
-    @SequenceGenerator(name="customer_gen", sequenceName = "customer_seq", allocationSize = 1)
-    @Column(name = "customer_id", nullable = false)
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "customer_gen"
+    ) // create primary key value automatically
+    @SequenceGenerator(
+            name="customer_gen",
+            sequenceName = "customer_seq",
+            allocationSize = 1)
+    @Column(
+            name = "customer_id",
+            nullable = false
+    )
     private long id;
 
     private String name;
     private String phoneNumber;
     private String email;
 
-    // TODO: Customer - History relationship: One to Many
-    // TODO: History - Order relationship: One to many
-
     @OneToMany(mappedBy = "customer") // refers to the customer field in the CustomerAddress entity (which is the other side of the relationship).
-    @JsonIgnoreProperties("customer")
+    @JsonIgnoreProperties("customer")  // TODO: NOT REALLY NECESSARY!! There are no JSON this side of the application
     private List<CustomerAddress> customerAddresses;
 
     @OneToMany(mappedBy = "customer") // refers to the customer field in the Order entity (which is the other side of the relationship).

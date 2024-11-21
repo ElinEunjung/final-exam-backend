@@ -1,7 +1,11 @@
-CREATE TABLE if NOT EXISTS order
+CREATE TABLE if NOT EXISTS ORDERS
 (
-    id BIGINT PRIMARY KEY,
-
+    order_id BIGINT PRIMARY KEY,
+    shippingAddress VARCHAR(100) NOT NULL,
+    shippingCharge REAL NOT NULL,
+    totalPrice REAL NOT NULL,
+    isShipped BOOLEAN NOT NULL DEFAULT FALSE,
+    customer_id BIGINT NOT NULL REFERENCES CUSTOMERS(customer_id)
 );
 
-CREATE SEQUENCE customer_address_seq;
+CREATE SEQUENCE order_seq;
