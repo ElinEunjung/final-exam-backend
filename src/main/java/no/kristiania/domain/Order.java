@@ -1,5 +1,6 @@
 package no.kristiania.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,34 +13,33 @@ import java.util.Map;
 @Data // Automatically generates getters, setters, toString(), equals() and hashCode() method
 @NoArgsConstructor // Automatically generates constructors with and without arguments
 @AllArgsConstructor
-@Table(name = "order")
+@Table(name = "orders") // !! // Changed table name to avoid reserved keyword conflict
 public class Order {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_gen")
+    @SequenceGenerator(name = "order_gen", sequenceName = "order_seq")
+    @Column(name = "order_id", nullable = false)
     private Long id;
+
     private double shippingCharge;
     private double totalPrice; // product prices + shipping charge
     private boolean isShipped;
 
-    // TODO: Order - Product relationship: One to Many
-    // TODO: Order - QuantityOfProduct relationshiqp: Many to Many -> created OrderProduct association entity
-        //TODO: Order - OrderProduct(Products) relationship: One to Many
-    // TODO: Order - Customer relationship: Many To One
-    // TODO: Order - Shipping address relationship: One to One
 
     @OneToMany(mappedBy = "order")
+    @JsonIgnoreProperties("order")
     private List<OrderProduct> productQuantities; // Holds the list of products and their quantities in the order
 
-    @OneToMany(mappedBy = "order")
-    @JoinColumn(name = "order_id") // Foreign key column in the Product table
-    private List<Product> products;
+//    @OneToMany(mappedBy = "order")
+//    @JsonIgnoreProperties("order")
+//    private List<Product> products;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id")  // Foreign key column in the Order table
+    @JoinColumn(name = "customer_id")  // Refers to Customer's primary key
     private Customer customer;
 
-    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
-    @JoinColumn(name = "shipping_address_id") // Foreign key column in the Order table referencing CustomerAddress
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "shipping_address_id") // Refers to CustomerAddress's primary key
     private CustomerAddress shippingAddress;
 
     public Order(
@@ -47,7 +47,7 @@ public class Order {
             double totalPrice,
             boolean isShipped,
             List<OrderProduct> productQuantities,
-            List<Product> products,
+//            List<Product> products,
             Customer customer,
             CustomerAddress shippingAddress
     ) {
@@ -55,7 +55,7 @@ public class Order {
         this.totalPrice = totalPrice;
         this.isShipped = isShipped;
         this.productQuantities = productQuantities;
-        this.products = products;
+//        this.products = products;
         this.customer = customer;
         this.shippingAddress = shippingAddress;
     }

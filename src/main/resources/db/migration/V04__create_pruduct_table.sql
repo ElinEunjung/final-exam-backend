@@ -1,0 +1,7 @@
+CREATE TABLE if NOT EXISTS product
+(
+    id BIGINT PRIMARY KEY,
+
+);
+
+CREATE SEQUENCE product_seq;

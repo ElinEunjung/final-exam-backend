@@ -4,30 +4,30 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Getter @Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "customer_address")
 
 public class CustomerAddress {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "customer_address_gen")
+    @SequenceGenerator(name="customer_address_gen", sequenceName = "customer_address_seq")
+    @Column(name = "customer_address_id", nullable = false)
+    private Long id;
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private @Id Long id;
     private String address;
 
-//    @OneToOne(mappedBy = "shippingAddress") // Indicates this side is the inverse of the relationship
-//    private Order order; // Optional if we need a bidirectional relationship
-
     @ManyToOne
-    @JoinColumn(name = "customer_address_id")
+    @JoinColumn(name = "customer_id") // Refers to Customer's primary key
     private Customer customer;
 
-    public CustomerAddress(
-            String address,
-            Customer customer
-    ) {
-        this.address = address;
-        this.customer = customer;
-    }
+//    public CustomerAddress(
+//            String address,
+//            Customer customer
+//    ) {
+//        this.address = address;
+//        this.customer = customer;
+//    }
 
 }
