@@ -1,4 +1,4 @@
-package no.kristiania.controller;
+package no.kristiania.controllers;
 
 
 import no.kristiania.repositories.orders.Order;
