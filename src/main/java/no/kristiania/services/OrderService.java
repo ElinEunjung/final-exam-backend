@@ -18,6 +18,8 @@ public class OrderService {
         this.orderRepo = orderRepo;
     }
 
+    // TODO: Placing an order should update the status and quantity on hand of a product,
+    //  and the system should not allow products to be ordered that are out of stock.
 
     //Read
     public List<Order> getAllOrders() {

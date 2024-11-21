@@ -20,6 +20,9 @@ public class OrderController {
         this.orderService = orderService;
     }
 
+    // TODO: Placing an order should update the status and quantity on hand of a product,
+    //  and the system should not allow products to be ordered that are out of stock.
+
     @GetMapping //Mapping Read method
     public ResponseEntity<List<Order>> getAllOrders() {
         List<Order> order = orderService.getAllOrders();
