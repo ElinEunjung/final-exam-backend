@@ -17,7 +17,7 @@ public class CustomerService {
     }
 
     // TODO: Fetching a customer should show their addresses and order history.
-    // TODO: Fetching a customer should show the customer and shipping address.
+
 
     public List<Customer> getAllCustomers() {
         return customerRepo.findAll();

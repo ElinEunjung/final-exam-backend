@@ -1,0 +1,6 @@
+no\kristiania\domain\Order.class
+no\kristiania\models\ProductStatus.class
+no\kristiania\domain\Product.class
+no\kristiania\domain\Customer.class
+no\kristiania\Application.class
+no\kristiania\domain\CustomerAddress.class

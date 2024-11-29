@@ -1,0 +1,13 @@
+D:\_EKSAMESSBESVARELSE_SAMLING_summited\pgr209-h24-backend-programming-exam\pre-exam-backend\src\main\java\no\kristiania\Application.java
+D:\_EKSAMESSBESVARELSE_SAMLING_summited\pgr209-h24-backend-programming-exam\pre-exam-backend\src\main\java\no\kristiania\controller\BicycleController.java
+D:\_EKSAMESSBESVARELSE_SAMLING_summited\pgr209-h24-backend-programming-exam\pre-exam-backend\src\main\java\no\kristiania\controller\ManufacturerController.java
+D:\_EKSAMESSBESVARELSE_SAMLING_summited\pgr209-h24-backend-programming-exam\pre-exam-backend\src\main\java\no\kristiania\domain\Customer.java
+D:\_EKSAMESSBESVARELSE_SAMLING_summited\pgr209-h24-backend-programming-exam\pre-exam-backend\src\main\java\no\kristiania\domain\CustomerAddress.java
+D:\_EKSAMESSBESVARELSE_SAMLING_summited\pgr209-h24-backend-programming-exam\pre-exam-backend\src\main\java\no\kristiania\domain\Order.java
+D:\_EKSAMESSBESVARELSE_SAMLING_summited\pgr209-h24-backend-programming-exam\pre-exam-backend\src\main\java\no\kristiania\domain\Product.java
+D:\_EKSAMESSBESVARELSE_SAMLING_summited\pgr209-h24-backend-programming-exam\pre-exam-backend\src\main\java\no\kristiania\InitialData.java
+D:\_EKSAMESSBESVARELSE_SAMLING_summited\pgr209-h24-backend-programming-exam\pre-exam-backend\src\main\java\no\kristiania\models\ProductStatus.java
+D:\_EKSAMESSBESVARELSE_SAMLING_summited\pgr209-h24-backend-programming-exam\pre-exam-backend\src\main\java\no\kristiania\repository\BicycleRepo.java
+D:\_EKSAMESSBESVARELSE_SAMLING_summited\pgr209-h24-backend-programming-exam\pre-exam-backend\src\main\java\no\kristiania\repository\ManufacturerRepo.java
+D:\_EKSAMESSBESVARELSE_SAMLING_summited\pgr209-h24-backend-programming-exam\pre-exam-backend\src\main\java\no\kristiania\services\BicycleService.java
+D:\_EKSAMESSBESVARELSE_SAMLING_summited\pgr209-h24-backend-programming-exam\pre-exam-backend\src\main\java\no\kristiania\services\ManufacturerService.java

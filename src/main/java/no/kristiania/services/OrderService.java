@@ -18,6 +18,7 @@ public class OrderService {
         this.orderRepo = orderRepo;
     }
 
+    // TODO: Fetching an order should show the customer and shipping address.
     // TODO: Placing an order should update the status and quantity on hand of a product,
     //  and the system should not allow products to be ordered that are out of stock.
 

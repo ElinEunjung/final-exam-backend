@@ -9,4 +9,4 @@ public record ExceptionResponse(
     int status,
     String reason,
     ZonedDateTime timestamp
-){}
+) {}

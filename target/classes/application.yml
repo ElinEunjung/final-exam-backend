@@ -1,0 +1,29 @@
+#spring.application.name=first-spring-data-jpa-app
+
+
+# PostgreSQL Configuration (example)
+#spring.datasource.url=jdbc:postgresql://localhost:5432/mydb
+#spring.datasource.username=postgres
+#spring.datasource.password=yourpassword
+#spring.jpa.hibernate.ddl-auto=update
+#spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+
+
+# PostgreSQL Configuration
+spring:
+    application:
+        name: candy-co-backend
+
+    jpa:
+        hibernate.ddl-auto: none
+        database: postgresql
+
+    datasource:
+        driver-class-name: org.postgresql.Driver
+        url: jdbc:postgresql://localhost:5432/appdb
+        username: appuser
+        password: pirate
+
+    flyway.enabled: true
+
+server.port: 8080
