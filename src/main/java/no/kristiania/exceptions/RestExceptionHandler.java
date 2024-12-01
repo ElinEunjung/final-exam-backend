@@ -1,4 +1,4 @@
-package no.kristiania.errors;
+package no.kristiania.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

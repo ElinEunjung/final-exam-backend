@@ -1,4 +1,4 @@
-package no.kristiania.errors;
+package no.kristiania.exceptions;
 
 import lombok.Builder;
 

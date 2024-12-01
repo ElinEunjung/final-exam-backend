@@ -1,9 +1,9 @@
 package no.kristiania.services;
 
+import no.kristiania.dto.OrderDto;
 import no.kristiania.exceptions.OrderNotFoundException;
 import no.kristiania.exceptions.ProductNotFoundException;
 import no.kristiania.repositories.orders.Order;
-import no.kristiania.dto.OrderDto;
 import no.kristiania.repositories.orders.OrderProduct;
 import no.kristiania.repositories.orders.OrderRepo;
 import no.kristiania.repositories.products.Product;

@@ -79,7 +79,12 @@ public class InitialData implements CommandLineRunner {
                     email
             );
 
-            customerService.createCustomer(customer);
+            try {
+                customerService.createCustomer(customer);
+            } catch (Exception e) {
+                System.err.println("Failed to create customer: " + e.getMessage());
+            }
+
             customers.add(customer);
         }
 
@@ -108,16 +113,7 @@ public class InitialData implements CommandLineRunner {
 
         List<Product> products = new ArrayList<>();
         for (long i = 0; i < count; i++) {
-            List<String> candyNames = List.of(
-                    "Blue Alligator",
-                    "Red Lip",
-                    "Mini Hamburger",
-                    "Sky Coke",
-                    "Bubble Crush",
-                    "Minty Love",
-                    "Gummy bear Rainbow"
-            );
-            String candyName = candyNames.get(random.nextInt(candyNames.size()));
+            String candyName = faker.color().name() + " " + faker.food().ingredient();
             String description = faker.lorem().sentence(10);
             float price = Float.parseFloat(faker.commerce().price(50, 100));
             ProductStatus status = ProductStatus.values()[random.nextInt(ProductStatus.values().length)];
@@ -151,13 +147,11 @@ public class InitialData implements CommandLineRunner {
         List<Order> orders = new ArrayList<>();
         for (long i = 0; i < count; i++) {
             String shippingAddress = faker.address().fullAddress();
-            float shippingCharge = Float.parseFloat(faker.commerce().price(50, 100));
-            boolean isShipped = faker.bool().bool();
             Customer customer = customers.get(random.nextInt(customers.size()));
 
             // Create new orderProduct
             List<OrderProduct> newOrderProducts = new ArrayList<>();
-            float totalPrice = shippingCharge;
+            float totalPrice = 0;
 
             for (int j = 0; j < random.nextInt(3) + 1; j++) {
                 Product product = products.get(random.nextInt(products.size()));
@@ -177,16 +171,31 @@ public class InitialData implements CommandLineRunner {
                 totalPrice += product.getPrice() * productQuantity;
 
                 // Update quantityInStock
-                product.setQuantityInStock(product.getQuantityInStock() - productQuantity);
+                if (productQuantity > 0) {
+                    product.setQuantityInStock(product.getQuantityInStock() - productQuantity);
+                } else {
+                    continue;
+                }
             }
 
+            // Skip order creation if totalPrice is 0 (when it's empty order)
+            if (newOrderProducts.isEmpty() || totalPrice <= 0) {
+                continue;
+            }
+
+            // Calc shipping charge (Only available for valid order)
+            float shippingCharge = Float.parseFloat(faker.commerce().price(50, 100));
+            totalPrice += shippingCharge;
+            boolean isShipped = faker.bool().bool();
+
+
             // Create order
-            Order order = new Order (
-                shippingAddress,
-                shippingCharge,
-                totalPrice,
-                isShipped,
-                customer
+            Order order = new Order(
+                    shippingAddress,
+                    shippingCharge,
+                    totalPrice,
+                    isShipped,
+                    customer
             );
             orderService.createOrder(order);
 
@@ -196,15 +205,7 @@ public class InitialData implements CommandLineRunner {
                 orderProductService.createOrderProduct(newOrderProduct);
             }
             orders.add(order);
-        }
-        orders.forEach(order -> {
-            System.out.println("ShippingAddress: " + order.getShippingAddress());
-            System.out.println("ShippingCharge: " + order.getShippingCharge());
-            System.out.println("TotalPrice: " + order.getTotalPrice());
-            System.out.println("isShipped: " + order.isShipped());
-            System.out.println("CustomerId: " + order.getCustomer());
-            System.out.println("---");
-        });
+    }
         return orders;
     }
 
@@ -218,7 +219,6 @@ public class InitialData implements CommandLineRunner {
             Order order = orders.get(random.nextInt(orders.size()));
             Product product = products.get(random.nextInt(products.size()));
             int productQuantity = product.getQuantityInStock();
-
 
             OrderProduct orderProduct = new OrderProduct(
                     order,
