@@ -29,7 +29,7 @@ public class Product {
             name = "product_id",
             nullable = false
     )
-    private Long id;
+    private Long productId;
 
     private String name;
     private String description;
@@ -38,6 +38,7 @@ public class Product {
     @Enumerated(EnumType.STRING)
     private ProductStatus status;
 
+    @Column(name = "quantity_in_stock")
     private int quantityInStock; // same with "quantityOnHand"
 
     @OneToMany(mappedBy = "product")
@@ -45,21 +46,17 @@ public class Product {
     private List<OrderProduct> orderProducts;
 
     public Product(
-            Long id,
             String name,
             String description,
-            int price,
+            float price,
             ProductStatus status,
-            int quantityInStock,
-            List<OrderProduct> orderProducts
+            int quantityInStock
     ) {
-        this.id = id;
-        this.name = name;
 
+        this.name = name;
         this.description = description;
         this.price = price;
         this.status = status;
         this.quantityInStock = quantityInStock;
-        this.orderProducts = orderProducts;
     }
 }

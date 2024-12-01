@@ -1,5 +1,7 @@
 package no.kristiania.services;
 
+import no.kristiania.errors.CustomerAddressNotFoundException;
+import no.kristiania.errors.ProductNotFoundException;
 import no.kristiania.repositories.customers.Customer;
 import no.kristiania.repositories.customers.CustomerAddress;
 import no.kristiania.repositories.customers.CustomerAddressRepo;
@@ -31,7 +33,15 @@ public class CustomerAddressService {
     }
 
     public void deleteCustomerAddress(Long id) {
-        customerAddressRepo.deleteById(id);
+        if (!customerAddressRepo.existsById(id)) {
+            throw new CustomerAddressNotFoundException("Customer Address not found for ID: " + id);
+        }
+
+    customerAddressRepo.deleteById(id);
+    }
+
+    public void deleteAllCustomerAddresses() {
+        customerAddressRepo.deleteAll();
     }
 
 }

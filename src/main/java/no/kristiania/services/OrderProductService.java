@@ -40,6 +40,9 @@ public class OrderProductService {
         orderProductRepo.deleteById(id);
     }
 
+    public void deleteAllOrderProducts() {
+        orderProductRepo.deleteAll();
+    }
 }
 
 

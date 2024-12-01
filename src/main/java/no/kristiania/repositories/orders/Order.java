@@ -29,10 +29,18 @@ public class Order {
             name = "order_id",
             nullable = false
     )
-    private Long id;
+    private Long orderId;
+
+    @Column(name = "shipping_address")
     private String shippingAddress;
+
+    @Column(name = "shipping_charge")
     private float shippingCharge;
+
+    @Column(name = "total_price")
     private float totalPrice; // product prices + shipping charge
+
+    @Column(name = "is_shipped")
     private boolean isShipped;
 
 
@@ -50,7 +58,6 @@ public class Order {
             float shippingCharge,
             float totalPrice,
             boolean isShipped,
-            List<OrderProduct> productQuantities,
             Customer customer
 
     ) {
@@ -58,7 +65,6 @@ public class Order {
         this.shippingCharge = shippingCharge;
         this.totalPrice = totalPrice;
         this.isShipped = isShipped;
-        this.productQuantities = productQuantities;
         this.customer = customer;
     }
 }

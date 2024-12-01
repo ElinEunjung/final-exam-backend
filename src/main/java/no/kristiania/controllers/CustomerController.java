@@ -20,7 +20,6 @@ public class CustomerController {
     }
 
     // TODO: Fetching a customer should show their addresses and order history.
-    // TODO: Fetching a customer should show the customer and shipping address.
 
     @GetMapping //Mapping Read method
     public ResponseEntity<List<Customer>> getAllCustomers() {

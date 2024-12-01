@@ -32,12 +32,12 @@ public class CustomerAddress {
     @JoinColumn(name = "customer_id") // Refers to Customer's primary key
     private Customer customer;
 
-//    public CustomerAddress(
-//            String address,
-//            Customer customer
-//    ) {
-//        this.address = address;
-//        this.customer = customer;
-//    }
+    public CustomerAddress(
+            String address,
+            Customer customer
+    ) {
+        this.address = address;
+        this.customer = customer;
+    }
 
 }

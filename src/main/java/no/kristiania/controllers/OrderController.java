@@ -1,7 +1,9 @@
 package no.kristiania.controllers;
 
 
+import no.kristiania.repositories.customers.Customer;
 import no.kristiania.repositories.orders.Order;
+import no.kristiania.services.CustomerService;
 import no.kristiania.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,12 +16,15 @@ import java.util.List;
 @RequestMapping("/api/order") //Handle HTTP requests with the corresponding path
 public class OrderController {
     private final OrderService orderService;
+    private final CustomerService customerService;
 
-    @Autowired //Constructor Injection
-    public OrderController(OrderService orderService) {
+    @Autowired
+    public OrderController(OrderService orderService, CustomerService customerService) {
         this.orderService = orderService;
+        this.customerService = customerService;
     }
 
+    // TODO: Fetching an order should show the customer and shipping address.
     // TODO: Placing an order should update the status and quantity on hand of a product,
     //  and the system should not allow products to be ordered that are out of stock.
 

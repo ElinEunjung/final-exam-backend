@@ -1,7 +1,6 @@
 package no.kristiania.services;
 
-import no.kristiania.repositories.orders.Order;
-import no.kristiania.repositories.orders.OrderRepo;
+import no.kristiania.errors.ProductNotFoundException;
 import no.kristiania.repositories.products.Product;
 import no.kristiania.repositories.products.ProductRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,12 +29,25 @@ public class ProductService {
     }
 
     //Update
+
+    public void updateProduct(Product product) {
+        productRepo.save(product);
+    }
+
     public Product getProductById(Long id) {
         return productRepo.findById(id).orElse(null);
     }
 
     //Delete
     public void deleteProduct(Long id) {
+        if (!productRepo.existsById(id)) {
+            throw new ProductNotFoundException("Product not found for ID: " + id);
+        }
         productRepo.deleteById(id);
     }
+
+    public void deleteAllProducts() {
+        productRepo.deleteAll();
+    }
+
 }

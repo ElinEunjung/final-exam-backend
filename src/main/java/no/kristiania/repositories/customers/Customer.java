@@ -28,9 +28,10 @@ public class Customer {
             name = "customer_id",
             nullable = false
     )
-    private long id;
+    private long customerId;
 
     private String name;
+    @Column(name = "phone_number")
     private String phoneNumber;
     private String email;
 
@@ -43,17 +44,14 @@ public class Customer {
     private List<Order> history; // A customer can have multiple orders
 
 
-//    public Customer(
-//            String name,
-//            String phoneNumber,
-//            String email,
-//            List<CustomerAddress> customerAddresses,
-//            List<Order> history
-//    ) {
-//        this.name = name;
-//        this.phoneNumber = phoneNumber;
-//        this.email = email;
-//        this.customerAddresses = customerAddresses;
-//        this.history = history;
-//    }
+    public Customer(
+            String name,
+            String phoneNumber,
+            String email
+    ) {
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+
+    }
 }

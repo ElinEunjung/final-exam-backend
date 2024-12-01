@@ -11,6 +11,7 @@ import no.kristiania.repositories.products.Product;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Table(name = "ORDER_PRODUCTS")
 public class OrderProduct {
+
     @Id
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
@@ -26,7 +27,7 @@ public class OrderProduct {
             nullable = false
     )
     @EqualsAndHashCode.Include
-    private Long Id;
+    private Long orderProductId;
 
     @ManyToOne
     @JoinColumn(name = "order_id")
@@ -39,4 +40,9 @@ public class OrderProduct {
     @Column(nullable = false)
     private int productQuantity; // number of products per each order
 
+    public OrderProduct(Order order, Product product, int productQuantity) {
+        this.order = order;
+        this.product = product;
+        this.productQuantity = productQuantity;
+    }
 }
