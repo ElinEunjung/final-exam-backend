@@ -45,19 +45,13 @@ public class InitialData implements CommandLineRunner {
         this.orderProductService = orderProductService;
     }
 
-    // TODO: Create fake customerAddresses;
-    // TODO: Create fake Orders;
-    // TODO: Create fake Products;
-    // TODO: Create fake OrderProducts;
-
-
     @Override
     public void run(String... args) {
-        customerService.deleteAllCustomers();
-        customerAddressService.deleteAllCustomerAddresses();
-        orderService.deleteAllOrders();
-        orderProductService.deleteAllOrderProducts();
-        productService.deleteAllProducts();
+//        customerService.deleteAllCustomers();
+//        customerAddressService.deleteAllCustomerAddresses();
+//        orderService.deleteAllOrders();
+//        orderProductService.deleteAllOrderProducts();
+//        productService.deleteAllProducts();
 
 //        if (customerService.getAllCustomers().size() >= 10) {
 //            System.out.println("More than 10 customers exists now");
@@ -66,15 +60,10 @@ public class InitialData implements CommandLineRunner {
 
         List<Customer> customers = createFakeCustomers(5);
         List<CustomerAddress> customerAddresses = createFakeCustomerAddresses(customers);
-        List<Product> products = createFakeProducts(5);
+        List<Product> products = createFakeProducts(10);
         List<OrderProduct> orderProducts = createFakeOrderProducts(new ArrayList<>(), products, 10);
-        List<Order> orders = createFakeOrders(customers, orderProducts, 10);
-
-
-
-
+        List<Order> orders = createFakeOrders(customers, 10);
     }
-
 
     public List<Customer> createFakeCustomers(int count) {
         List<Customer> customers = new ArrayList<>();
@@ -118,18 +107,10 @@ public class InitialData implements CommandLineRunner {
     }
 
     public List<Product> createFakeProducts(int count) {
+
         List<Product> products = new ArrayList<>();
         for (long i = 0; i < count; i++) {
-            List<String> candyNames = List.of(
-                    "Blue Aligator",
-                    "Red Lip",
-                    "Mini Hamburger",
-                    "Sky Coke",
-                    "Bubble Crush",
-                    "Minty Love",
-                    "Gummy bear Rainbow"
-            );
-            String name = candyNames.get(random.nextInt(candyNames.size()));
+            String candyName = faker.color().name() + " " + faker.animal().name();
             String description = faker.lorem().sentence(10);
             float price = Float.parseFloat(faker.commerce().price(50, 100));
             ProductStatus status = ProductStatus.values()[random.nextInt(ProductStatus.values().length)];
@@ -140,7 +121,7 @@ public class InitialData implements CommandLineRunner {
             }
 
             Product product = new Product(
-                    name,
+                    candyName,
                     description,
                     price,
                     status,
@@ -152,18 +133,11 @@ public class InitialData implements CommandLineRunner {
 
 
         }
-        products.forEach(product -> {
-            System.out.println("Name: " + product.getName());
-            System.out.println("Status: " + product.getStatus());
-            System.out.println("Quantity: " + product.getQuantityInStock());
-            System.out.println("---");
-        });
         return products;
     }
 
     public List<Order> createFakeOrders(
             List<Customer> customers,
-            List<OrderProduct> orderProducts,
             int count
     ) {
         List<Order> orders = new ArrayList<>();
@@ -171,19 +145,19 @@ public class InitialData implements CommandLineRunner {
             String shippingAddress = faker.address().fullAddress();
             float shippingCharge = Float.parseFloat(faker.commerce().price(50, 100));
             boolean isShipped = faker.bool().bool();
-            Customer customer = customers.get(random.nextInt(customers.size()));
+            Customer customer = customers.get(random.nextInt(customers.size()+1));
 
 
             // Filter each order from OrderProduct
             List<OrderProduct> newOrderProducts = new ArrayList<>();
             float totalPrice = shippingCharge;
 
-            for (OrderProduct orderProduct : orderProducts){
-                if (orderProduct.getOrder() == null) {
-                    orderProduct.setOrder(null); // set Order
-                    newOrderProducts.add(orderProduct);
+            for (OrderProduct newOrderProduct : newOrderProducts){
+                if (newOrderProduct.getOrder() == null) {
+                    newOrderProduct.setOrder(null); // set Order
+                    newOrderProducts.add(newOrderProduct);
                     totalPrice +=
-                            orderProduct.getProduct().getPrice() * orderProduct.getProductQuantity();
+                            newOrderProduct.getProduct().getPrice() * newOrderProduct.getProductQuantity();
                     if(newOrderProducts.size() >= random.nextInt(3) + 1) break; // Connect with Max 3 OrderProduct
                 }
 
@@ -199,7 +173,14 @@ public class InitialData implements CommandLineRunner {
             orderService.createOrder(order);
             orders.add(order);
         }
-//        System.out.println("Shipping Charge: " + shippingCharge);
+        orders.forEach(order -> {
+            System.out.println("ShippingAddress: " + order.getShippingAddress());
+            System.out.println("ShippingCharge: " + order.getShippingCharge());
+            System.out.println("TotalPrice: " + order.getTotalPrice());
+            System.out.println("isShipped: " + order.isShipped());
+            System.out.println("CustomerId: " + order.getCustomer());
+            System.out.println("---");
+        });
         return orders;
     }
 

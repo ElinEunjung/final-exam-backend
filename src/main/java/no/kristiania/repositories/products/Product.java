@@ -31,7 +31,8 @@ public class Product {
     )
     private Long productId;
 
-    private String name;
+    @Column(name = "candy_name")
+    private String candyName;
     private String description;
     private float price;
 
@@ -46,14 +47,14 @@ public class Product {
     private List<OrderProduct> orderProducts;
 
     public Product(
-            String name,
+            String candyName,
             String description,
             float price,
             ProductStatus status,
             int quantityInStock
     ) {
 
-        this.name = name;
+        this.candyName = candyName;
         this.description = description;
         this.price = price;
         this.status = status;
