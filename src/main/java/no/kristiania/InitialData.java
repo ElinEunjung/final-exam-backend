@@ -45,6 +45,8 @@ public class InitialData implements CommandLineRunner {
         this.orderProductService = orderProductService;
     }
 
+    //ToDo: Fix problem with id reset after db migration
+
     @Override
     public void run(String... args) {
 //        customerService.deleteAllCustomers();
@@ -53,16 +55,12 @@ public class InitialData implements CommandLineRunner {
 //        orderProductService.deleteAllOrderProducts();
 //        productService.deleteAllProducts();
 
-//        if (customerService.getAllCustomers().size() >= 10) {
-//            System.out.println("More than 10 customers exists now");
-//            return;
-//        }
-
         List<Customer> customers = createFakeCustomers(5);
         List<CustomerAddress> customerAddresses = createFakeCustomerAddresses(customers);
         List<Product> products = createFakeProducts(10);
+        List<Order> orders = createFakeOrders(customers, products, 10);
         List<OrderProduct> orderProducts = createFakeOrderProducts(new ArrayList<>(), products, 10);
-        List<Order> orders = createFakeOrders(customers, 10);
+
     }
 
     public List<Customer> createFakeCustomers(int count) {
@@ -110,7 +108,16 @@ public class InitialData implements CommandLineRunner {
 
         List<Product> products = new ArrayList<>();
         for (long i = 0; i < count; i++) {
-            String candyName = faker.color().name() + " " + faker.animal().name();
+            List<String> candyNames = List.of(
+                    "Blue Alligator",
+                    "Red Lip",
+                    "Mini Hamburger",
+                    "Sky Coke",
+                    "Bubble Crush",
+                    "Minty Love",
+                    "Gummy bear Rainbow"
+            );
+            String candyName = candyNames.get(random.nextInt(candyNames.size()));
             String description = faker.lorem().sentence(10);
             float price = Float.parseFloat(faker.commerce().price(50, 100));
             ProductStatus status = ProductStatus.values()[random.nextInt(ProductStatus.values().length)];
@@ -138,6 +145,7 @@ public class InitialData implements CommandLineRunner {
 
     public List<Order> createFakeOrders(
             List<Customer> customers,
+            List<Product> products,
             int count
     ) {
         List<Order> orders = new ArrayList<>();
@@ -145,24 +153,34 @@ public class InitialData implements CommandLineRunner {
             String shippingAddress = faker.address().fullAddress();
             float shippingCharge = Float.parseFloat(faker.commerce().price(50, 100));
             boolean isShipped = faker.bool().bool();
-            Customer customer = customers.get(random.nextInt(customers.size()+1));
+            Customer customer = customers.get(random.nextInt(customers.size()));
 
-
-            // Filter each order from OrderProduct
+            // Create new orderProduct
             List<OrderProduct> newOrderProducts = new ArrayList<>();
             float totalPrice = shippingCharge;
 
-            for (OrderProduct newOrderProduct : newOrderProducts){
-                if (newOrderProduct.getOrder() == null) {
-                    newOrderProduct.setOrder(null); // set Order
-                    newOrderProducts.add(newOrderProduct);
-                    totalPrice +=
-                            newOrderProduct.getProduct().getPrice() * newOrderProduct.getProductQuantity();
-                    if(newOrderProducts.size() >= random.nextInt(3) + 1) break; // Connect with Max 3 OrderProduct
+            for (int j = 0; j < random.nextInt(3) + 1; j++) {
+                Product product = products.get(random.nextInt(products.size()));
+                if (product.getQuantityInStock() == 0) continue; // Don't add to order when out of stock
+
+                int productQuantity = random.nextInt(20) + 1;
+                if (productQuantity > product.getQuantityInStock()) {
+                    productQuantity = product.getQuantityInStock(); // Limit available product quantity
                 }
 
+                OrderProduct newOrderProduct = new OrderProduct(
+                        null, // Set order later
+                        product,
+                        productQuantity
+                );
+                newOrderProducts.add(newOrderProduct);
+                totalPrice += product.getPrice() * productQuantity;
+
+                // Update quantityInStock
+                product.setQuantityInStock(product.getQuantityInStock() - productQuantity);
             }
 
+            // Create order
             Order order = new Order (
                 shippingAddress,
                 shippingCharge,
@@ -171,6 +189,12 @@ public class InitialData implements CommandLineRunner {
                 customer
             );
             orderService.createOrder(order);
+
+            // Connect OrderProduct to Order
+            for (OrderProduct newOrderProduct : newOrderProducts) {
+                newOrderProduct.setOrder(order);
+                orderProductService.createOrderProduct(newOrderProduct);
+            }
             orders.add(order);
         }
         orders.forEach(order -> {
@@ -193,7 +217,7 @@ public class InitialData implements CommandLineRunner {
         for (long i = 0; i < count; i++) {
             Order order = orders.get(random.nextInt(orders.size()));
             Product product = products.get(random.nextInt(products.size()));
-            int productQuantity = random.nextInt(20) + 1;
+            int productQuantity = product.getQuantityInStock();
 
 
             OrderProduct orderProduct = new OrderProduct(
