@@ -15,6 +15,4 @@ public class OrderDto {
     private String shippingAddress;
     private Order isShipped;
     private Product quantityInStock;
-
 }
-
