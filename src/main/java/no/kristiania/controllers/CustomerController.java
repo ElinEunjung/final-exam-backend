@@ -1,5 +1,6 @@
 package no.kristiania.controllers;
 
+import no.kristiania.dto.CustomerDTO;
 import no.kristiania.repositories.customers.Customer;
 import no.kristiania.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ public class CustomerController {
 
     // TODO: Fetching a customer should show their addresses and order history.
 
+
     @GetMapping //Mapping Read method
     public ResponseEntity<List<Customer>> getAllCustomers() {
         List<Customer> customers = customerService.getAllCustomers();
@@ -41,10 +43,10 @@ public class CustomerController {
         return new ResponseEntity<>(customerService.createCustomer(customer), HttpStatus.CREATED);
     }
 
-    @GetMapping(value = "/{id}") //Mapping Read Method
-    public ResponseEntity<Customer> getCustomerById(@PathVariable Long id) {
-        Customer customer = customerService.getCustomerById(id);
-        return new ResponseEntity<>(customer, HttpStatus.OK);
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable Long id) {
+        CustomerDTO customerDto = customerService.getCustomerById(id);
+        return new ResponseEntity<>(customerDto, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}") //Mapping Delete method

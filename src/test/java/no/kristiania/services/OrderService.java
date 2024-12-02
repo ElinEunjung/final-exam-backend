@@ -1,6 +1,6 @@
 package no.kristiania.services;
 
-import no.kristiania.dto.OrderDto;
+import no.kristiania.dto.OrderDTO;
 import no.kristiania.exceptions.OrderNotFoundException;
 import no.kristiania.exceptions.ProductNotFoundException;
 import no.kristiania.repositories.orders.Order;
@@ -65,7 +65,7 @@ public class OrderService {
 
     // TODO: Placing an order should update the status and quantity on hand of a product,
     //  and the system should not allow products to be ordered that are out of stock.
-    public void validateAndUpdateOrder(OrderDto orderDto) {
+    public void validateAndUpdateOrder(OrderDTO orderDto) {
         Order order = new Order();
         for (OrderProduct orderProduct: order.getProductQuantities()) {
             Product product = productService.getProductById(orderProduct.getOrderProductId());
@@ -86,13 +86,13 @@ public class OrderService {
     // TODO: Fetching an order should show the customer and shipping address.
 
     // Order tracking
-    public OrderDto fetchOrderById(Long orderId) {
+    public OrderDTO fetchOrderById(Long orderId) {
         Order order = orderRepo
                 .findById(orderId)
                 .orElseThrow(() ->
                new  OrderNotFoundException("Order not found for ID: " + orderId));
 
-        OrderDto orderDto = new OrderDto();
+        OrderDTO orderDto = new OrderDTO();
         orderDto.setCustomer(order.getCustomer());
         orderDto.setShippingAddress(order.getShippingAddress());
 

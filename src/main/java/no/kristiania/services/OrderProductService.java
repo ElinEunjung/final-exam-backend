@@ -1,5 +1,6 @@
 package no.kristiania.services;
 
+import no.kristiania.exceptions.OrderNotFoundException;
 import no.kristiania.repositories.orders.Order;
 import no.kristiania.repositories.orders.OrderProduct;
 import no.kristiania.repositories.orders.OrderProductRepo;
@@ -33,6 +34,12 @@ public class OrderProductService {
     //Update
     public OrderProduct getOrderProductById(Long id) {
         return orderProductRepo.findById(id).orElse(null);
+    }
+
+    public OrderProduct getOrderProductByOrderId(Long orderId) {
+        return orderProductRepo
+                .findOrderProductByOrderId(orderId)
+                .orElseThrow(() -> new OrderNotFoundException("Could not find order by id " + orderId));
     }
 
     //Delete

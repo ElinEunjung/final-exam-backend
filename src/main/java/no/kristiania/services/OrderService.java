@@ -3,7 +3,7 @@ package no.kristiania.services;
 import no.kristiania.exceptions.OrderNotFoundException;
 import no.kristiania.exceptions.ProductNotFoundException;
 import no.kristiania.repositories.orders.Order;
-import no.kristiania.dto.OrderDto;
+import no.kristiania.dto.OrderDTO;
 import no.kristiania.repositories.orders.OrderProduct;
 import no.kristiania.repositories.orders.OrderRepo;
 import no.kristiania.repositories.products.Product;
@@ -11,31 +11,37 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
-@Service //@Service represents this class is service layer.
+@Service
 public class OrderService {
 
     private final OrderRepo orderRepo;
-    private final CustomerService customerService;
     private final ProductService productService;
+
+    private final OrderProductService orderProductService;
 
 
     @Autowired
     public OrderService(
             OrderRepo orderRepo,
-            CustomerService customerService,
-            ProductService productService
+            ProductService productService,
+            OrderProductService orderProductService
     ) {
 
         this.orderRepo = orderRepo;
-        this.customerService = customerService;
         this.productService = productService;
+        this.orderProductService = orderProductService;
     }
 
 
     //Read
-    public List<Order> getAllOrders() {
-        return orderRepo.findAll();
+    public List<OrderDTO> getAllOrders() {
+        return orderRepo
+                .findAll()
+                .stream()
+                .map(this::enrichOrderWithProductInformation)
+                .collect(Collectors.toList());
     }
 
     //Create
@@ -65,7 +71,7 @@ public class OrderService {
 
     // TODO: Placing an order should update the status and quantity on hand of a product,
     //  and the system should not allow products to be ordered that are out of stock.
-    public void validateAndUpdateOrder(OrderDto orderDto) {
+    public void validateAndUpdateOrder(OrderDTO orderDto) {
         Order order = new Order();
         for (OrderProduct orderProduct: order.getProductQuantities()) {
             Product product = productService.getProductById(orderProduct.getOrderProductId());
@@ -83,20 +89,23 @@ public class OrderService {
         return orderRepo.findById(orderId).orElse(null);
     }
 
+    public List<OrderDTO> getOrderHistoryByCustomerId(Long customerId) {
+        return orderRepo.getOrderByCustomerId(customerId)
+                .stream()
+                .map((this::enrichOrderWithProductInformation))
+                .collect(Collectors.toList());
+    }
+
     // TODO: Fetching an order should show the customer and shipping address.
 
     // Order tracking
-    public OrderDto fetchOrderById(Long orderId) {
+    public OrderDTO fetchOrderById(Long orderId) {
         Order order = orderRepo
                 .findById(orderId)
                 .orElseThrow(() ->
                new  OrderNotFoundException("Order not found for ID: " + orderId));
 
-        OrderDto orderDto = new OrderDto();
-        orderDto.setCustomer(order.getCustomer());
-        orderDto.setShippingAddress(order.getShippingAddress());
-
-        return orderDto;
+        return enrichOrderWithProductInformation(order);
     }
 
 
@@ -108,10 +117,9 @@ public class OrderService {
         orderRepo.deleteById(id);
     }
 
-    public void deleteAllOrders() {
-        orderRepo.deleteAll();
+    private OrderDTO enrichOrderWithProductInformation(Order order) {
+        Long orderId = order.getOrderId();
+        OrderProduct orderProduct = orderProductService.getOrderProductByOrderId(orderId);
+        return new OrderDTO(orderProduct);
     }
-
 }
-
-

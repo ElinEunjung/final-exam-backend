@@ -1,6 +1,7 @@
 package no.kristiania.controllers;
 
 
+import no.kristiania.dto.OrderDTO;
 import no.kristiania.repositories.orders.Order;
 import no.kristiania.services.CustomerService;
 import no.kristiania.services.OrderService;
@@ -28,8 +29,8 @@ public class OrderControllerTest {
     //  and the system should not allow products to be ordered that are out of stock.
 
     @GetMapping //Mapping Read method
-    public ResponseEntity<List<Order>> getAllOrders() {
-        List<Order> order = orderService.getAllOrders();
+    public ResponseEntity<List<OrderDTO>> getAllOrders() {
+        List<OrderDTO> order = orderService.getAllOrders();
         return new ResponseEntity<>(order, HttpStatus.OK);
     }
 

@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CustomerAddressService {
@@ -27,6 +29,17 @@ public class CustomerAddressService {
 
     public CustomerAddress getCustomerAddressById(Long id){
         return customerAddressRepo.findById(id).orElse(null);
+    }
+
+    public List<String> getCustomerAddressByCustomerId(Long customerId){
+        List<CustomerAddress> customerAddresses = customerAddressRepo.findCustomerAddressByCustomerId(customerId);
+        if (customerAddresses.isEmpty()) {
+            throw new CustomerAddressNotFoundException("Could not find any customer address for customer with id " + customerId);
+        }
+        return customerAddresses
+                .stream()
+                .map(CustomerAddress::getAddress)
+                .collect(Collectors.toList());
     }
 
     public void deleteCustomerAddress(Long id) {

@@ -54,13 +54,13 @@ public class InitialData implements CommandLineRunner {
 //        orderService.deleteAllOrders();
 //        orderProductService.deleteAllOrderProducts();
 //        productService.deleteAllProducts();
-
+/*
         List<Customer> customers = createFakeCustomers(5);
         List<CustomerAddress> customerAddresses = createFakeCustomerAddresses(customers);
         List<Product> products = createFakeProducts(10);
         List<Order> orders = createFakeOrders(customers, products, 10);
         List<OrderProduct> orderProducts = createFakeOrderProducts(new ArrayList<>(), products, 10);
-
+*/
     }
 
     public List<Customer> createFakeCustomers(int count) {

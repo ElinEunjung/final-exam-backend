@@ -41,12 +41,6 @@ public class CustomerControllerTest {
         return new ResponseEntity<>(customerService.createCustomer(customer), HttpStatus.CREATED);
     }
 
-    @GetMapping(value = "/{id}") //Mapping Read Method
-    public ResponseEntity<Customer> getCustomerById(@PathVariable Long id) {
-        Customer customer = customerService.getCustomerById(id);
-        return new ResponseEntity<>(customer, HttpStatus.OK);
-    }
-
     @DeleteMapping("/{id}") //Mapping Delete method
     public ResponseEntity<?> deleteCustomer(@PathVariable Long id) {
         customerService.deleteCustomer(id);
